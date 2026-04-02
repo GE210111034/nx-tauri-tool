@@ -1,0 +1,68 @@
+{
+  "name": "Tauri Android (NX) – Codespaces",
+
+  // Build from the Dockerfile in this directory.
+  // The Dockerfile uses mcr.microsoft.com/devcontainers/base:ubuntu-22.04 as
+  // its base – see the Dockerfile header for the reasoning behind this choice.
+  "build": {
+    "dockerfile": "Dockerfile",
+    "args": {
+      "ANDROID_COMPILE_SDK": "34",
+      "ANDROID_BUILD_TOOLS": "34.0.0",
+      "ANDROID_NDK_VERSION": "26.3.11579264"
+    }
+  },
+
+  // Run as the default non-root user provided by the base image
+  "remoteUser": "vscode",
+
+  // ── VS Code extensions ────────────────────────────────────────────────────
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        // Rust
+        "rust-lang.rust-analyzer",
+        "tamasfe.even-better-toml",
+        // Tauri
+        "tauri-apps.tauri-vscode",
+        // Android / Java
+        "redhat.java",
+        "vscjava.vscode-java-debug",
+        "vscjava.vscode-gradle",
+        // NX
+        "nrwl.angular-console",
+        // General
+        "esbenp.prettier-vscode",
+        "dbaeumer.vscode-eslint",
+        "streetsidesoftware.code-spell-checker"
+      ],
+      "settings": {
+        "rust-analyzer.cargo.target": "aarch64-linux-android",
+        "java.jdt.ls.java.home": "/usr/lib/jvm/java-17-openjdk-amd64",
+        "terminal.integrated.defaultProfile.linux": "bash"
+      }
+    }
+  },
+
+  // ── Port forwarding ───────────────────────────────────────────────────────
+  // Tauri dev server default port
+  "forwardPorts": [1420],
+  "portsAttributes": {
+    "1420": {
+      "label": "Tauri Dev Server",
+      "onAutoForward": "notify"
+    }
+  },
+
+  // ── Environment variables ─────────────────────────────────────────────────
+  "remoteEnv": {
+    "ANDROID_HOME": "/opt/android-sdk",
+    "ANDROID_SDK_ROOT": "/opt/android-sdk",
+    "ANDROID_NDK_HOME": "/opt/android-sdk/ndk/26.3.11579264",
+    "NDK_HOME": "/opt/android-sdk/ndk/26.3.11579264",
+    "JAVA_HOME": "/usr/lib/jvm/java-17-openjdk-amd64"
+  },
+
+  // ── Post-create setup ─────────────────────────────────────────────────────
+  "postCreateCommand": "echo 'Devcontainer ready. Run: cargo tauri android build'"
+}
