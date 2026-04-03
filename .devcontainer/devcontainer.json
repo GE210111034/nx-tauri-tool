@@ -4,18 +4,36 @@
 		"dockerfile": "Dockerfile"
 	},
 	"features": {
-		"ghcr.io/devcontainers/features/desktop-lite:": {},
-		"ghcr.io/devcontainers/features/rust:": {}
+		"ghcr.io/devcontainers/features/desktop-lite:1.2.8": {},
+		"ghcr.io/devcontainers/features/common-utils:2.5.7": {},
+		"ghcr.io/devcontainers/features/rust:1.5.0": {},
+		"ghcr.io/devcontainers/features/node:1.7.1": {},
+		"ghcr.io/devcontainers/features/java:1.8.0": {
+			"version": "17"
+		}
 	},
 	"containerEnv": {
 		"DISPLAY": "" // Allow the Dev Containers extension to set DISPLAY, post-create.sh will add it back in ~/.bashrc and ~/.zshrc if not set.
 	},
+	"remoteUser": "root",
+	"containerUser": "root",
 	"overrideCommand": false,
 	"privileged": true,
+	"runArgs": [
+		"--net=host",
+		"--pid=host",
+		"--ipc=host",
+		"--cgroupns=host",
+		"--cap-add=SYS_ADMIN",
+		"--security-opt=seccomp=unconfined",
+		"--security-opt=apparmor=unconfined",
+		"--device=/dev/kvm",
+		"--device=/dev/bus/usb"
+	],
 	"mounts": [
 		{
-			"source": "vscode-dev",
-			"target": "/vscode-dev",
+			"source": "/",
+			"target": "/host-root",
 			"type": "volume"
 		}
 	],
@@ -36,7 +54,10 @@
 			]
 		}
 	},
-	"forwardPorts": [6080, 5901],
+	"forwardPorts": [
+		6080,
+		5901
+	],
 	"portsAttributes": {
 		"6080": {
 			"label": "VNC web client (noVNC)",
@@ -48,6 +69,6 @@
 		}
 	},
 	"hostRequirements": {
-		"memory": "9gb"
+		"memory": "16gb"
 	}
 }
